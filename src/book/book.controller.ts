@@ -51,8 +51,8 @@ export class BookController {
         }
     }
 
-    @Delete()
-    async removeUpdate(@Param('id') id: string) {
+    @Delete('/:id')
+    async removeBook(@Param('id') id: string) {
         const removeBook = await this.bookRepository.remove(id);
 
         return {
