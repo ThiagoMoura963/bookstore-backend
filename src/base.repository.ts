@@ -45,13 +45,15 @@ export abstract class BaseRepository<TEntity extends IEntity>
     return this.readEntities();
   }
 
-  public async save(entity: TEntity): Promise<void> {
+  public async saveByEntity(entity: TEntity): Promise<void> {
     const entities = await this.readEntities();
 
     const newList = [...entities, entity];
 
     await this.writeEntities(newList);
   }
+
+  public abstract saveById(id: string): Promise<TEntity>;
 
   public async update(id: string, entity: Partial<TEntity>): Promise<void> {
     const foundEntity = await this.getById(id);

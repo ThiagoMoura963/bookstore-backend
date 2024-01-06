@@ -3,7 +3,6 @@ import { FavoriteEntity } from './favorite.entity';
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { BookEntity } from 'src/book/book.entity';
-// import { IFavoriteRepository } from './favorite.interface';
 
 @Injectable()
 export class FavoriteRepository extends BaseRepository<FavoriteEntity> {
@@ -11,22 +10,38 @@ export class FavoriteRepository extends BaseRepository<FavoriteEntity> {
     super('favorites.json');
   }
 
-  public async save(id: string): Promise<void> {
+  public async saveById(id: string): Promise<BookEntity | undefined> {
     const encoding = 'utf8';
-    const books = await fs.promises.readFile('books.json', encoding);
-    const favorites = await fs.promises.readFile('favorites.json', encoding);
 
-    const foundBook = JSON.parse(books).find(
-      (book: BookEntity) => book.id === id,
-    );
+    try {
+      const books = await fs.promises.readFile('books.json', encoding);
+      const favorites = await fs.promises.readFile('favorites.json', encoding);
 
-    if (foundBook) {
+      const foundBook = JSON.parse(books).find(
+        (book: BookEntity) => book.id === id,
+      );
+
+      if (!foundBook) {
+        throw new Error('Livro não encontrado');
+      }
+
+      const isBookInFavorites = JSON.parse(favorites).find(
+        (favorite: FavoriteEntity) => favorite.id === id,
+      );
+
+      if (isBookInFavorites) {
+        throw new Error('Livro já está nos favoritos');
+      }
+
       const newList = [...JSON.parse(favorites), foundBook];
-      await fs.promises.writeFile('favorites.json', newList);
-    } else {
-      throw new Error('Livro não encontrado');
+      await fs.promises.writeFile(
+        'favorites.json',
+        JSON.stringify(newList, null, 2),
+      );
+
+      return foundBook;
+    } catch (error) {
+      console.log(error);
     }
   }
-
-  public async save(entity: FavoriteEntity): Promise<void> {}
 }

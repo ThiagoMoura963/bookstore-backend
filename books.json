@@ -1,14 +1,42 @@
 [
   {
-    "id": "2f82ea69-7d1c-4092-923b-998762e230e8",
-    "title": "Harry Potter"
+    "id": "ee6b2213-8e97-4209-884c-6b803a9cef41",
+    "title": "O Sol é para Todos"
   },
   {
-    "id": "e87316f5-45d8-468d-8924-3593b16002d2",
-    "title": "Percy Jackson"
+    "id": "f0ba1552-fd8b-4e06-901c-f5bbb21c889c",
+    "title": "1984"
   },
   {
-    "id": "7adf4525-dfc5-495f-82b6-ca97af1f4cda",
-    "title": "Mundo de Sofia"
+    "id": "1f9f2342-5fec-4378-84f0-6ece8f9d410a",
+    "title": "O Grande Gatsby"
+  },
+  {
+    "id": "e6f3fef1-849f-4a13-8c8b-e40c55d24f02",
+    "title": "Cem Anos de Solidão"
+  },
+  {
+    "id": "254946a7-4754-4d90-8f26-3968a96c762f",
+    "title": "O Apanhador no Campo de Centeio"
+  },
+  {
+    "id": "c200512c-a6cd-4f3b-bb8b-602b7e079744",
+    "title": "Orgulho e Preconceito"
+  },
+  {
+    "id": "f79e5af7-4004-4466-a03d-fa0be400386d",
+    "title": "O Senhor dos Anéis"
+  },
+  {
+    "id": "72676e22-0c8c-4391-b3a5-470aa2f52dc7",
+    "title": "Harry Potter e a Pedra Filosofal"
+  },
+  {
+    "id": "ebadfc7f-2d56-498f-9e50-4b674b633562",
+    "title": "As Crônicas de Nárnia: O Leão, a Feiticeira e o Guarda-Roupa"
+  },
+  {
+    "id": "639f9cff-89b5-4676-8dc4-492e84f19023",
+    "title": "Jogos Vorazes"
   }
 ]

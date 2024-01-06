@@ -30,7 +30,7 @@ export class BookController {
 
     Object.assign(bookEntity, book);
 
-    this.bookRepository.save(bookEntity);
+    await this.bookRepository.saveByEntity(bookEntity);
 
     return {
       book: bookEntity,
