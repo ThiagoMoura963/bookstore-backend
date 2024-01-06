@@ -1,6 +1,6 @@
-import { IEntity } from "src/entity.interface";
+import { IEntity } from 'src/entity.interface';
 
 export class BookEntity implements IEntity {
-    id: string;
-    title: string;
+  id: string;
+  title: string;
 }

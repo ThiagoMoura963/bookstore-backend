@@ -1,3 +1,3 @@
-import { BookEntity } from "src/book/book.entity";
+import { BookEntity } from 'src/book/book.entity';
 
-export class FavoriteEntity extends BookEntity{ }
+export class FavoriteEntity extends BookEntity {}

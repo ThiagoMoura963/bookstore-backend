@@ -1,11 +1,11 @@
-import { 
-    Body, 
-    Controller, 
-    Delete, 
-    Get, 
-    Param, 
-    Post, 
-    Put 
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
 } from '@nestjs/common';
 import { BookRepository } from './book.repository';
 import { CreateBookDTO } from './dto/CreateBook.dto';
@@ -15,49 +15,46 @@ import { updateBookDTO } from './dto/UpdateBook.dto';
 
 @Controller('/books')
 export class BookController {
-    constructor(private bookRepository: BookRepository) { }
-    
-    @Get()
-    async listBooks() {
-        return this.bookRepository.list();
-    }
+  constructor(private bookRepository: BookRepository) {}
 
-    @Post() 
-    async createBook(@Body() book: CreateBookDTO) {
-        const bookEntity = new BookEntity();
+  @Get()
+  async listBooks() {
+    return this.bookRepository.list();
+  }
 
-        bookEntity.id = uuid();
-        
-        Object.assign(bookEntity, book);
+  @Post()
+  async createBook(@Body() book: CreateBookDTO) {
+    const bookEntity = new BookEntity();
 
-        this.bookRepository.save(bookEntity);
-        
-        return {
-            book: bookEntity,
-            message: 'criado com sucesso'
-        }
-    }
+    bookEntity.id = uuid();
 
-    @Put('/:id')
-    async updateBook(
-        @Param('id') id: string, 
-        @Body() book: updateBookDTO 
-    ) {
-        const updateBook = await this.bookRepository.update(id, book);
+    Object.assign(bookEntity, book);
 
-        return {
-            book: updateBook,
-            message: 'atualizado com sucesso'
-        }
-    }
+    this.bookRepository.save(bookEntity);
 
-    @Delete('/:id')
-    async removeBook(@Param('id') id: string) {
-        const removeBook = await this.bookRepository.remove(id);
+    return {
+      book: bookEntity,
+      message: 'criado com sucesso',
+    };
+  }
 
-        return {
-            book: removeBook,
-            message: 'removido com sucesso'
-        }
-    }
+  @Put('/:id')
+  async updateBook(@Param('id') id: string, @Body() book: updateBookDTO) {
+    const updateBook = await this.bookRepository.update(id, book);
+
+    return {
+      book: updateBook,
+      message: 'atualizado com sucesso',
+    };
+  }
+
+  @Delete('/:id')
+  async removeBook(@Param('id') id: string) {
+    const removeBook = await this.bookRepository.remove(id);
+
+    return {
+      book: removeBook,
+      message: 'removido com sucesso',
+    };
+  }
 }

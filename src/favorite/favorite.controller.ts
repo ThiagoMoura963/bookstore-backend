@@ -3,16 +3,13 @@ import { FavoriteRepository } from './favorite.repository';
 
 @Controller('/favorites')
 export class FavoriteController {
-    constructor(private favoriteRepository: FavoriteRepository) { }
+  constructor(private favoriteRepository: FavoriteRepository) {}
 
-    @Post()
-    async createFavorite(@Param('id') id: string) {
+  //   @Post()
+  //   async createFavorite(@Param('id') id: string) {}
 
-    }
-
-    @Get()
-    async listFavorites() {
-        return this.favoriteRepository.list();
-    }
-
+  @Get()
+  async listFavorites() {
+    return this.favoriteRepository.list();
+  }
 }

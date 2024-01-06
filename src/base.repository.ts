@@ -2,72 +2,79 @@ import { IRepository } from './base.interface.repository';
 import { IEntity } from './entity.interface';
 import * as fs from 'fs';
 
-export abstract class BaseRepository<TEntity extends IEntity> implements IRepository<TEntity>{
-    protected fileName: string;
+export abstract class BaseRepository<TEntity extends IEntity>
+  implements IRepository<TEntity>
+{
+  protected fileName: string;
 
-    constructor(fileName: string) {
-        this.fileName = fileName;
+  constructor(fileName: string) {
+    this.fileName = fileName;
+  }
+
+  private async readEntities(): Promise<TEntity[]> {
+    try {
+      const encoding = 'utf8';
+      const data = await fs.promises.readFile(this.fileName, encoding);
+
+      return JSON.parse(data);
+    } catch (error) {
+      return [];
+    }
+  }
+
+  private async writeEntities(entities: TEntity[] | TEntity): Promise<void> {
+    await fs.promises.writeFile(
+      this.fileName,
+      JSON.stringify(entities, null, 2),
+    );
+  }
+
+  private async getById(id: string): Promise<TEntity> {
+    const entities = await this.readEntities();
+
+    const potentialEntity = entities.find((entity) => entity.id === id);
+
+    if (!potentialEntity) {
+      throw new Error('Id não encontrado');
     }
 
-    private async readEntities(): Promise<TEntity[]> {
-        try {
-            const encoding = 'utf8';
-            const data = await fs.promises.readFile(this.fileName, encoding);
-            
-            return JSON.parse(data);
-        } catch (error) {
-            return [];
-        }
-    }
+    return potentialEntity;
+  }
 
-    private async writeEntities(entities: TEntity[] | TEntity): Promise<void> {
-        await fs.promises.writeFile(this.fileName, JSON.stringify(entities, null, 2));
-    }
+  public async list(): Promise<TEntity[]> {
+    return this.readEntities();
+  }
 
-    private async getById(id: string): Promise<TEntity> {
-        const entities = await this.readEntities();
+  public async save(entity: TEntity): Promise<void> {
+    const entities = await this.readEntities();
 
-        const potentialEntity = entities.find(entity => entity.id === id);
+    const newList = [...entities, entity];
 
-        if(!potentialEntity) {
-            throw new Error('Id não encontrado');
-        }
+    await this.writeEntities(newList);
+  }
 
-        return potentialEntity;
-    }
+  public async update(id: string, entity: Partial<TEntity>): Promise<void> {
+    const foundEntity = await this.getById(id);
 
-    public async list(): Promise<TEntity[]> {
-        return this.readEntities();
-    }
+    Object.entries(entity).forEach(async ([key, value]) => {
+      if (key === 'id') {
+        return;
+      }
 
-    public async save(entity: TEntity): Promise<void> {
-        const entities = await this.readEntities();
-        
-        const newList = [...entities, entity];
+      foundEntity[key] = value;
 
-        await this.writeEntities(newList);
-    }
+      await this.writeEntities(foundEntity);
+    });
+  }
 
-    public async update(id: string, entity: Partial<TEntity>): Promise<void> {
-        const foundEntity = await this.getById(id);
+  public async remove(id: string): Promise<void> {
+    const foundEntity = await this.getById(id);
+    const entities = await this.readEntities();
 
-        Object.entries(entity).forEach(async ([key, value]) => {
-            if(key === 'id') {
-                return;
-            }
+    const filteredEntities = entities.filter(
+      (entity) => entity.id !== foundEntity.id,
+    );
 
-            foundEntity[key] = value;
-
-            await this.writeEntities(foundEntity);
-        });
-    }
-
-    public async remove(id: string): Promise<void> {
-        const foundEntity = await this.getById(id);
-        const entities = await this.readEntities();
-    
-        const filteredEntities = entities.filter(entity => entity.id !== foundEntity.id);
-    
-        await this.writeEntities(filteredEntities);
-    }
+    await this.writeEntities(filteredEntities);
+  }
 }

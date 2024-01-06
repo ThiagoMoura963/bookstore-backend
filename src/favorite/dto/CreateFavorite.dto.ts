@@ -1,3 +1,1 @@
-export class CreateFavoriteDTO {
-
-}
+export class CreateFavoriteDTO {}
